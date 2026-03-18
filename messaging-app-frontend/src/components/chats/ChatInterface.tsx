@@ -149,7 +149,12 @@ const ChatInterface = ({
   }, [roomId, messages]);
 
   const sendMessage = () => {
-    const message = getValues("message");
+    const message = getValues("message")?.trim();
+
+    if (!message) {
+      return;
+    }
+
     const randomId = Math.floor(Math.random() * 99999999);
     setMessages((prev) => [
       ...prev,
@@ -164,7 +169,11 @@ const ChatInterface = ({
       randomId,
       (res: { success: boolean }) => {
         if (res.success) {
-          console.log("message sent success");
+          setMessages((prev) =>
+            prev.map((mess) =>
+              mess.messageId === randomId ? { ...mess, sending: false } : mess,
+            ),
+          );
         }
       },
     );
@@ -234,7 +243,7 @@ const ChatInterface = ({
                 "flex max-w-[50%] items-center gap-2",
                 message.senderId !== user?.id ? "self-start" : "self-end",
               )}
-              key={crypto.randomUUID()}
+              key={message.messageId}
             >
               <div className="border-border bg-secondary w-fit rounded-lg border p-2 px-3 text-[14px] font-light">
                 {message.message}

@@ -31,21 +31,16 @@ const onConnection = (socket) => {
     }
 
     const { success, senderData } = result;
+    const room = String(roomId);
 
     if (success) {
-      io.to(String(roomId)).emit(
-        "message",
-        message,
-        senderData,
-        randomId,
-        roomId,
-      );
+      io.to(room).emit("message", message, senderData, randomId, roomId);
     }
   });
 
   // join room event
   socket.on("join room", (room) => {
-    socket.join(room);
+    socket.join(String(room));
   });
 
   // notifications handler
