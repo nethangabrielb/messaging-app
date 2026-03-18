@@ -82,6 +82,9 @@ export function LoginForm({ ...props }: Readonly<FormProps>) {
     mutation.mutate(values);
   };
 
+  const emailRegister = register("email");
+  const passwordRegister = register("password");
+
   return (
     <form className={"flex flex-col gap-6"} onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col items-center gap-2 text-center">
@@ -106,7 +109,7 @@ export function LoginForm({ ...props }: Readonly<FormProps>) {
             )}
           </div>
           <Input
-            {...register("email")}
+            {...emailRegister}
             id="email"
             type="email"
             placeholder="m@example.com"
@@ -115,9 +118,9 @@ export function LoginForm({ ...props }: Readonly<FormProps>) {
               errors.email ||
                 (error.error === "email" && "border-red-500 !ring-red-500"),
             )}
-            // Add an onChange listener here to remove error if
-            // user is typing and finished typing
-            onChange={() => {
+            onChange={(event) => {
+              emailRegister.onChange(event);
+
               if (error.error === "email") {
                 setError({ error: "", message: "" });
               }
@@ -139,7 +142,7 @@ export function LoginForm({ ...props }: Readonly<FormProps>) {
             )}
           </div>
           <Input
-            {...register("password")}
+            {...passwordRegister}
             id="password"
             type="password"
             required
@@ -147,9 +150,9 @@ export function LoginForm({ ...props }: Readonly<FormProps>) {
               errors.password ||
                 (error.error === "password" && "border-red-500 !ring-red-500"),
             )}
-            // Same here, we add an onChange listener here to remove error if
-            // user is typing and finished typing
-            onChange={() => {
+            onChange={(event) => {
+              passwordRegister.onChange(event);
+
               if (error.error === "password") {
                 setError({ error: "", message: "" });
               }
@@ -163,6 +166,7 @@ export function LoginForm({ ...props }: Readonly<FormProps>) {
       <div className="text-center text-sm">
         Don&apos;t have an account?{" "}
         <button
+          type="button"
           className="cursor-pointer underline underline-offset-4"
           onClick={() => {
             props.setForm("register");
