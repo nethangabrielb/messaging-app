@@ -69,33 +69,55 @@ const ChatInterface = ({
       randomId: number,
       roomIdRecipient: number,
     ) => {
-      const updatedMessages = messages.map((mess) => {
-        if (mess.messageId === randomId) {
-          return {
-            message: message,
-            senderId: sender.id,
-            sending: false,
-            messageId: randomId,
-          };
-        } else {
-          return mess;
-        }
-      });
-      if (sender.id === user?.id) {
-        setMessages(updatedMessages);
-      } else if (sender.username === endUser?.username) {
+      const senderId = Number(sender.id);
+      const currentUserId = Number(user?.id);
+
+      if (senderId === currentUserId) {
+        setMessages((prev) => {
+          let wasUpdated = false;
+
+          const next = prev.map((mess) => {
+            if (mess.messageId === randomId) {
+              wasUpdated = true;
+              return {
+                message,
+                senderId,
+                sending: false,
+                messageId: randomId,
+              };
+            }
+
+            return mess;
+          });
+
+          if (!wasUpdated) {
+            next.push({
+              message,
+              senderId,
+              sending: false,
+              messageId: randomId,
+            });
+          }
+
+          return next;
+        });
+        return;
+      }
+
+      if (sender.username === endUser?.username) {
         setMessages((prev) => [
           ...prev,
           {
-            message: message,
-            senderId: sender.id,
+            message,
+            senderId,
             sending: false,
             messageId: randomId,
           },
         ]);
-      } else {
-        socket.emit("notification", roomIdRecipient, user?.id);
+        return;
       }
+
+      socket.emit("notification", roomIdRecipient, user?.id);
     };
 
     socket.on("message", messageHandler);
@@ -103,7 +125,7 @@ const ChatInterface = ({
     return () => {
       socket.off("message", messageHandler);
     };
-  }, [messages, user, endUser?.username]);
+  }, [user, endUser?.username]);
 
   // join chatroom associated to room
   useEffect(() => {
