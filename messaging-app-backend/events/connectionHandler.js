@@ -24,15 +24,22 @@ const onConnection = (socket) => {
 
   // message event
   socket.on("message", async (message, token, roomId, randomId, callback) => {
-    const { success, senderData } = await messageHandler(
-      message,
-      token,
-      roomId,
-      callback
-    );
+    const result = await messageHandler(message, token, roomId, callback);
+
+    if (!result) {
+      return;
+    }
+
+    const { success, senderData } = result;
 
     if (success) {
-      io.emit("message", message, senderData, randomId, roomId);
+      io.to(String(roomId)).emit(
+        "message",
+        message,
+        senderData,
+        randomId,
+        roomId,
+      );
     }
   });
 
@@ -43,10 +50,16 @@ const onConnection = (socket) => {
 
   // notifications handler
   socket.on("notification", async (roomId, senderId) => {
-    const { success } = await notificationHandler(senderId, roomId);
+    const result = await notificationHandler(senderId, roomId);
+
+    if (!result) {
+      return;
+    }
+
+    const { success } = result;
 
     if (success) {
-      io.emit("notification", senderId, success);
+      io.to(String(roomId)).emit("notification", senderId, success);
     }
   });
 

@@ -44,6 +44,9 @@ model Message {
   sender    User     @relation(fields: [senderId], references: [id])
   message   String
   createdAt DateTime @default(now())
+
+  @@index([roomId, createdAt])
+  @@index([senderId])
 }
 
 model Notification {

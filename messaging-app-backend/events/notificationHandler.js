@@ -1,37 +1,27 @@
 import { prisma } from "../clients/prismaClient.js";
 
 const notificationHandler = async (userId, roomId) => {
-  let updatedNotification = null;
+  const parsedUserId = Number(userId);
+  const parsedRoomId = Number(roomId);
 
-  // check if notification exists for the associated user and room
-  const notification = await prisma.notification.findFirst({
+  const updatedNotification = await prisma.notification.upsert({
     where: {
-      AND: [{ roomId }, { userId }],
+      userId_roomId: {
+        userId: parsedUserId,
+        roomId: parsedRoomId,
+      },
+    },
+    update: {
+      count: {
+        increment: 1,
+      },
+    },
+    create: {
+      count: 1,
+      roomId: parsedRoomId,
+      userId: parsedUserId,
     },
   });
-
-  // if notification alraedy exist we increment
-  // otherwise we create a new one
-  if (notification) {
-    updatedNotification = await prisma.notification.update({
-      where: {
-        id: notification.id,
-      },
-      data: {
-        count: {
-          increment: 1,
-        },
-      },
-    });
-  } else {
-    updatedNotification = await prisma.notification.create({
-      data: {
-        count: 1,
-        roomId,
-        userId,
-      },
-    });
-  }
 
   if (updatedNotification) {
     return { success: true };
@@ -39,29 +29,21 @@ const notificationHandler = async (userId, roomId) => {
 };
 
 const clearNotificationHandler = async (userId, roomId) => {
-  const notification = await prisma.notification.findFirst({
+  const parsedUserId = Number(userId);
+  const parsedRoomId = Number(roomId);
+
+  const deletedNotification = await prisma.notification.deleteMany({
     where: {
-      AND: [{ roomId }, { userId }],
+      userId: parsedUserId,
+      roomId: parsedRoomId,
     },
   });
 
-  // delete if it exists
-  if (notification) {
-    const deletedNotification = await prisma.notification.delete({
-      where: {
-        userId_roomId: {
-          userId,
-          roomId,
-        },
-      },
-    });
-
-    if (deletedNotification) {
-      return { success: true };
-    }
-  } else {
+  if (deletedNotification.count === 0) {
     return { success: false };
   }
+
+  return { success: true };
 };
 
 export { notificationHandler, clearNotificationHandler };

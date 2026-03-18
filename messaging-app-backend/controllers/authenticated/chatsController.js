@@ -1,7 +1,5 @@
 import { prisma } from "../../clients/prismaClient.js";
 
- 
-
 const chatsController = (() => {
   const getChats = async (req, res) => {
     try {
@@ -34,7 +32,15 @@ const chatsController = (() => {
               status: true,
             },
           },
-          Notification: true,
+          Notification: {
+            where: {
+              userId: Number(userId),
+            },
+            select: {
+              roomId: true,
+              count: true,
+            },
+          },
         },
       });
 

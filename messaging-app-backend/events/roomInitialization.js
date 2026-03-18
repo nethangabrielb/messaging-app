@@ -1,23 +1,17 @@
 import jwt from "jsonwebtoken";
 import { prisma } from "../clients/prismaClient.js";
 
- 
-
 const initializeRoom = async (token, recipientId, callback) => {
   const client = jwt.verify(token, process.env.JWT_SECRET);
   delete client.iat;
-  const recipient = await prisma.user.findUnique({
-    where: {
-      id: Number(recipientId),
-    },
-  });
+  const parsedRecipientId = Number(recipientId);
 
   // Find room if it exists
   const room = await prisma.room.findFirst({
     where: {
       AND: [
         { users: { some: { id: client.id } } },
-        { users: { some: { id: recipient.id } } },
+        { users: { some: { id: parsedRecipientId } } },
       ],
     },
   });
@@ -29,7 +23,7 @@ const initializeRoom = async (token, recipientId, callback) => {
     const roomNew = await prisma.room.create({
       data: {
         users: {
-          connect: [{ id: client.id }, { id: recipient.id }],
+          connect: [{ id: client.id }, { id: parsedRecipientId }],
         },
       },
     });
