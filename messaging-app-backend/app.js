@@ -4,6 +4,7 @@ import cors from "cors";
 import { Server } from "socket.io";
 import { createServer } from "node:http";
 import onConnection from "./events/connectionHandler.js";
+import startKeepAliveService from "./utils/startKeepAliveService.js";
 
 import guestRouter from "./routes/guest/guestRouter.js";
 import userRouter from "./routes/authenticated/userRouter.js";
@@ -34,6 +35,7 @@ app.get("/api/ping", (req, res) => {
 });
 
 io.on("connection", onConnection);
+startKeepAliveService();
 
 const PORT = process.env.PORT || 3000;
 
