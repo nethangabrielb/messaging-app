@@ -4,8 +4,6 @@
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/nethangabrielb/messaging-app)
 ![GitHub repo size](https://img.shields.io/github/repo-size/nethangabrielb/messaging-app)
-![License](https://img.shields.io/github/license/nethangabrielb/messaging-app)
-![Status](https://img.shields.io/badge/status-active-brightgreen)
 
 ## 📖 About the Project
 
@@ -42,7 +40,7 @@ I wanted a practical, end-to-end project that combines classic REST patterns wit
 - [x] Profile management — Username/bio update and avatar upload.
 - [x] Search and filter users — Backend user listing supports filtering/search query patterns.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 
@@ -78,7 +76,7 @@ I wanted a practical, end-to-end project that combines classic REST patterns wit
 - **Nodemon** — Backend dev autoreload.
 - **ESLint + TypeScript tooling** — Frontend static analysis and build checks.
 
-## 🏗️ Architecture
+## Architecture
 
 ```text
 Browser (React + Vite)
@@ -102,7 +100,7 @@ Browser <==== Socket.IO (real-time events) ====> Express + Socket.IO Server
 
 REST endpoints are used for authentication, user profile updates, chat list retrieval, and room message history. Socket.IO is used for low-latency chat interactions and notification signaling.
 
-## ⚙️ Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -239,19 +237,14 @@ No Swagger/Postman collection is currently committed. The routes below are based
 └── README.md
 ```
 
-## 🗺️ Roadmap
+## Roadmap
 
 - [x] Core authentication and account recovery
 - [x] Real-time room messaging
 - [x] Profile settings and avatar upload
 - [x] Notification count persistence per room
-- [ ] Group chats with more than two users
-- [ ] Message attachments (images/files)
-- [ ] End-to-end tests for auth and chat flows
-- [ ] Swagger/OpenAPI documentation
-- [ ] Docker Compose local environment
 
-## 🤝 Contributing
+## Contributing
 
 This is a personal project, but feedback and suggestions are welcome.
 
@@ -260,21 +253,6 @@ This is a personal project, but feedback and suggestions are welcome.
 3. Commit your changes: `git commit -m "Add your feature"`.
 4. Push to the branch: `git push origin feature/your-feature`.
 5. Open a Pull Request.
-
-## 📄 License
-
-Distributed under the **Unlicense** (planned). Add a `LICENSE` file to finalize the repository license metadata.
-
-## 📬 Contact
-
-**nethangabrielb**
-
-- Portfolio: Not provided yet
-- GitHub: [@nethangabrielb](https://github.com/nethangabrielb)
-- LinkedIn: Not provided yet
-- Email: Not provided yet
-
-## 🙏 Acknowledgements
 
 - [Prisma](https://www.prisma.io/) — ORM and migration workflow.
 - [Socket.IO](https://socket.io/) — Real-time communication layer.
