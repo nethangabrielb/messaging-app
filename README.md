@@ -24,10 +24,17 @@ I wanted to learn how real-time communication works in web applications, and how
 
 ### What I Learned
 
-- Designing a hybrid architecture where REST handles CRUD while Socket.IO handles event-driven updates.
-- Modeling chat relationships in Prisma (users, rooms, messages, notifications) and evolving the schema through migrations.
-- Implementing profile updates with multipart form handling (`multer`) and S3-compatible object storage uploads.
-- Coordinating frontend route protection, auth token usage, and real-time socket lifecycle in a TypeScript React app.
+- How real-time communication works in web apps — specifically using Socket.IO for
+  event-driven updates alongside a traditional REST API for CRUD operations.
+- Modeling chat relationships in Prisma (users, rooms, messages, notifications) and
+  evolving the schema through migrations.
+- Implementing realistic account flows including email verification and password reset.
+- Handling profile updates with multipart form handling (`multer`) and S3-compatible
+  object storage uploads.
+- Coordinating frontend route protection, auth token usage, and real-time socket
+  lifecycle in a TypeScript React app.
+- Applying production-leaning concerns like keep-alive health checks to a deployed
+  fullstack application.
 
 ## Features
 
