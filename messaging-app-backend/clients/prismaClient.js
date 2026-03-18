@@ -4,8 +4,11 @@ import { PrismaClient } from "../generated/prisma/client.js";
 // Cache on globalThis in dev to avoid hot-reload duplication
 const globalForPrisma = globalThis;
 
-export const prisma = globalForPrisma.prisma || new PrismaClient();
+const prismaClient = globalForPrisma.prisma ?? new PrismaClient();
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.prisma = prismaClient;
+}
 
-
+export const prisma = prismaClient;
+export default prismaClient;
