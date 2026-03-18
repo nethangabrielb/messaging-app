@@ -1,16 +1,32 @@
 import jwt from "jsonwebtoken";
 
 const verifyToken = (req, res, next) => {
-  const bearerToken = req.headers.authorization;
-  const token = bearerToken.split(" ")[1];
+  try {
+    const bearerToken = req.headers.authorization;
 
-  const data = jwt.verify(token, process.env.JWT_SECRET);
+    if (!bearerToken || !bearerToken.startsWith("Bearer ")) {
+      return res.status(403).json({
+        code: "UNAUTHORIZED",
+        message: "You are unauthorized to access the data",
+        status: 403,
+      });
+    }
 
-  if (data) {
+    const token = bearerToken.split(" ")[1];
+    const data = jwt.verify(token, process.env.JWT_SECRET);
+
+    if (!data) {
+      return res.status(403).json({
+        code: "UNAUTHORIZED",
+        message: "You are unauthorized to access the data",
+        status: 403,
+      });
+    }
+
     req.user = data;
     next();
-  } else {
-    res.status(403).json({
+  } catch {
+    return res.status(403).json({
       code: "UNAUTHORIZED",
       message: "You are unauthorized to access the data",
       status: 403,

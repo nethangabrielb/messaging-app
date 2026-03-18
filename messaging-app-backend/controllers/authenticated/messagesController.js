@@ -1,16 +1,16 @@
 import { prisma } from "../../clients/prismaClient.js";
 
- 
-
 const messagesController = (() => {
   const getRoomMessages = async (req, res) => {
     const { roomId } = req.params;
+    const parsedRoomId = Number(roomId);
 
     const room = await prisma.message.findMany({
       where: {
-        room: {
-          id: Number(roomId),
-        },
+        roomId: parsedRoomId,
+      },
+      orderBy: {
+        createdAt: "asc",
       },
     });
 

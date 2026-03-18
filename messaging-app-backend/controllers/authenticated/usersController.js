@@ -6,16 +6,36 @@ import { s3Client } from "../../clients/s3Client.js";
 
 const upload = multer();
 
- 
-
 const usersController = (() => {
   const getAllUsers = async (req, res) => {
     const { tokenHolder, filter, search } = req.query;
+    const listUserSelect = {
+      id: true,
+      username: true,
+      bio: true,
+      avatar: true,
+      status: true,
+      createdAt: true,
+      updatedAt: true,
+    };
+
+    const currentUserSelect = {
+      id: true,
+      username: true,
+      email: true,
+      bio: true,
+      avatar: true,
+      status: true,
+      createdAt: true,
+      updatedAt: true,
+    };
+
     if (tokenHolder === "true") {
       const user = await prisma.user.findMany({
         where: {
           id: req.user.id,
         },
+        select: currentUserSelect,
       });
       return res.status(200).json({
         code: "FETCH_SUCCESS",
@@ -37,6 +57,7 @@ const usersController = (() => {
                 contains: search,
               },
             },
+            select: listUserSelect,
           });
         } else {
           users = await prisma.user.findMany({
@@ -49,6 +70,7 @@ const usersController = (() => {
                 contains: search,
               },
             },
+            select: listUserSelect,
           });
         }
       } else {
@@ -61,6 +83,7 @@ const usersController = (() => {
               contains: search,
             },
           },
+          select: listUserSelect,
         });
       }
       return res.status(200).json({
@@ -80,6 +103,7 @@ const usersController = (() => {
                 not: req.user.id,
               },
             },
+            select: listUserSelect,
           });
         } else {
           users = await prisma.user.findMany({
@@ -89,6 +113,7 @@ const usersController = (() => {
                 not: req.user.id,
               },
             },
+            select: listUserSelect,
           });
         }
       } else {
@@ -98,6 +123,7 @@ const usersController = (() => {
               not: req.user.id,
             },
           },
+          select: listUserSelect,
         });
       }
       return res.status(200).json({
@@ -118,6 +144,7 @@ const usersController = (() => {
             contains: search,
           },
         },
+        select: listUserSelect,
       });
 
       return res.status(200).json({
@@ -134,6 +161,7 @@ const usersController = (() => {
               not: req.user.id,
             },
           },
+          select: listUserSelect,
         });
         return res.status(200).json({
           code: "FETCH_SUCCESS",
@@ -210,7 +238,7 @@ const usersController = (() => {
                 Key: `${userId}-${file.originalname}`,
                 Body: file.buffer,
                 ContentType: file.mimetype,
-              })
+              }),
             );
             updatedUser = await prisma.user.update({
               where: {
