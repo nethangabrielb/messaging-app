@@ -18,7 +18,9 @@ File uploads for profile avatars are sent from the frontend and stored using an 
 
 ### Why I Built This
 
-I wanted a practical, end-to-end project that combines classic REST patterns with real-time communication. The goal was to build a messaging product with realistic account flows (verification/reset), status updates, room-based conversations, and production-leaning concerns like keep-alive health checks and object storage integration.
+I wanted to learn how real-time communication works in web applications, and how to create end-to-end project that combines classic REST patterns with real-time communication. The goal was to apply the concepts I have learned from The Odin Project and my own research on how real-time messaging works to build a messaging product of my own with realistic account flows (verification/reset), status updates, room-based conversations, and production-leaning concerns like keep-alive health checks and object storage integration.
+
+> 📚 Built in partial fulfillment of [The Odin Project – Messaging App](https://www.theodinproject.com/lessons/nodejs-messaging-app) project assignment.
 
 ### What I Learned
 
@@ -27,7 +29,7 @@ I wanted a practical, end-to-end project that combines classic REST patterns wit
 - Implementing profile updates with multipart form handling (`multer`) and S3-compatible object storage uploads.
 - Coordinating frontend route protection, auth token usage, and real-time socket lifecycle in a TypeScript React app.
 
-## ✨ Features
+## Features
 
 - [x] Authentication — Register/login with JWT-based authorization.
 - [x] Email verification — Verification email flow using Nodemailer + EJS templates.
